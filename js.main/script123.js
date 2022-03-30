@@ -1,10 +1,10 @@
-/* function NuevoProducto(id, producto, precio, img) {
+function NuevoProducto(id, producto, precio, img) {
     this.id = id;
     this.producto = producto;
     this.precio = precio;
     this.img = img;
 
-} */
+}
 
 
 
@@ -48,21 +48,36 @@ const productos = [{
 ];
 
 
-/* const productoNuevo = productos.push(new NuevoProducto(6, "jabon", 300, "./img-productos/jabon-facial-para-piel-seca-rosas-2.jpg")); */
+const productoNuevo = productos.push(new NuevoProducto(6, "jabon", 300, "./img-productos/jabon-facial-para-piel-seca-rosas-2.jpg"));
+
+
 const contenedor = document.getElementById("container");
+contenedor.className = "row", ""
+
 productos.forEach((producto) => {
 
     let card = document.createElement("div");
 
 
-    card.classList.add("card", "col-sm-12", "col-lg-3");
-    card.innerHTML = `  <img src=${productos.img} class="card-img-top" alt="...">
+    card.classList.add("card", "col-sm-12", "col-lg-3", );
+
+    card.innerHTML = `  <img src=${producto.img} class="card-img-top" alt="...">
     <div class="card-body">
-      <h5 class="card-title">${productos.producto}</h5>
-      <p class="card-text">${ productos.precio}</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
- 
-    `;
+      <h5 class="card-title">${producto.producto}</h5>
+      <p class="card-text">${ "$"+ producto.precio}</p>
+      <div class="btn-group" role="group" aria-label="Basic example">
+      <button id="btn-comprar" type="button"  class="btn btn-primary">comprar</button>
+      </div> 
+    </div>`;
+
     contenedor.appendChild(card);
+
 });
+    
+    const botonComprar = document.getElementById("btn-comprar");
+    
+    function productoEnCarrito() {
+        alert("sumaste un producto al carrito");
+    }
+    
+    botonComprar.addEventListener("click", productoEnCarrito);
