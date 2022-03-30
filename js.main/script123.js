@@ -52,7 +52,7 @@ const productoNuevo = productos.push(new NuevoProducto(6, "jabon", 300, "./img-p
 
 
 const contenedor = document.getElementById("container");
-contenedor.className = "row", ""
+contenedor.className = "row"
 
 productos.forEach((producto) => {
 
@@ -68,16 +68,19 @@ productos.forEach((producto) => {
       <div class="btn-group" role="group" aria-label="Basic example">
       <button id="btn-comprar" type="button"  class="btn btn-primary">comprar</button>
       </div> 
+
     </div>`;
 
     contenedor.appendChild(card);
 
 });
-    
-    const botonComprar = document.getElementById("btn-comprar");
-    
-    function productoEnCarrito() {
-        alert("sumaste un producto al carrito");
-    }
-    
-    botonComprar.addEventListener("click", productoEnCarrito);
+
+const botonComprar = document.querySelectorAll("#btn-comprar");
+
+
+
+function productoEnCarrito() {
+    alert("sumaste un producto al carrito");
+}
+
+botonComprar.forEach(boton => boton.addEventListener("click", productoEnCarrito));
