@@ -66,7 +66,7 @@ productos.forEach((producto) => {
       <h5 class="card-title">${producto.producto}</h5>
       <p class="card-text">${ "$"+ producto.precio}</p>
       <div class="btn-group" role="group" aria-label="Basic example">
-      <button id="btn-comprar" type="button"  class="btn btn-primary">comprar</button>
+      <button id="${productos.producto}" type="button"  class="btn btn-primary">comprar</button>
       </div> 
 
     </div>`;
@@ -75,7 +75,7 @@ productos.forEach((producto) => {
 
 });
 
-const botonComprar = document.querySelectorAll("#btn-comprar");
+const botonComprar = document.querySelectorAll("#${productos.producto}");
 
 
 
