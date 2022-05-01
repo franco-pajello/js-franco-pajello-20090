@@ -61,7 +61,7 @@ productos.forEach((producto) => {
   let btn = document.getElementById(`btnComprar${producto.id}`);
   btn.addEventListener("click", () => {
     let cantidad = 1
-    let precioTotal=0
+    let precioTotal = 0
 
     const productoRepetido = carrito.some(elemento => elemento.id === producto.id)
     if (productoRepetido) {
@@ -69,16 +69,14 @@ productos.forEach((producto) => {
       const prod = carrito.map(prod => {
         if (prod.id === producto.id) {
           prod.cantidad++
-          prod.precio * prod.cantidad
           creamosCarrito(carrito)
-          PrecioTotalFuncion(carrito)
           return;
         }
       })
     } else {
 
-      obtenerProducto(producto.id, producto.nombre, producto.precio, cantidad,precioTotal)
-    
+      obtenerProducto(producto.id, producto.nombre, producto.precio, cantidad, precioTotal)
+
     }
 
   })
@@ -106,11 +104,14 @@ carritoModal.innerHTML =
 
   
   </div>
-  <h5><div class="modal-footer d-flex justify-content-between" id="precioTotalId"> 
-  
-  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">vaciar carrito</button>
-  
+  <div d-flex justify-content-between>
+  <h5><div class="modal-footer" > 
+  TOTAL:<p id="precioTotalId"> </p>
   </div></h5>
+  <div>
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">vaciar carrito</button>
+  </div>
+  </div>
   <div class="modal-footer  d-flex justify-content-between">  
   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Comprar</button>
   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -122,41 +123,24 @@ carritoModal.innerHTML =
 headerCarrito.appendChild(carritoModal);
 
 
-
-
-let precioTotalCard =document.getElementById("precioTotalId")
-function creamosPrecioTotal(elementoPrecioTotal) {
-
-  
-  let precioTotalCardDiv =document.createElement("div")
-  
-  precioTotalCardDiv.innerHTML=`<p>TOTAL:$${elementoPrecioTotal}`
- 
-  
-  precioTotalCard.appendChild(precioTotalCardDiv);
-
- 
-}
-
-
-
+let precioTotalCard = document.getElementById("precioTotalId")
 
 const modalCarritoBody = document.getElementById("modalCarritoBody");
 
-function creamosCarrito(array, aasd) {
-  
+function creamosCarrito(array) {
+
   modalCarritoBody.innerHTML = ""
-  
+
   array.forEach(producto => {
-    
+
     let productoAgregadoAlCarrito = document.createElement("div")
-    productoAgregadoAlCarrito.innerHTML = 
-    `<div class="alert alert-success" role="alert">
+    productoAgregadoAlCarrito.innerHTML =
+      `<div class="alert alert-success" role="alert">
       <h4 class="alert-heading">${producto.nombre} 
       <hr>
       <p class="mb-0">${producto.cantidad}</p>
       <hr>
-      <p class="mb-0">${aasd}</p> <button id="btnEliminar${producto.id}" type="button" class="btn btn-dark">ELIMINAR</button></h4>
+      <p class="mb-0">${producto.precio}</p> <button id="btnEliminar${producto.id}" type="button" class="btn btn-dark">ELIMINAR</button></h4>
       
       </div> `
 
@@ -169,10 +153,10 @@ function creamosCarrito(array, aasd) {
       eliminarDelCarrito(producto.id)
     })
   });
-/* PrecioTotalFuncion(carrito) */
+  precioTotalCard.innerText = carrito.reduce((acc , prod)=> acc + prod.precio * prod.cantidad,0)
 }
 
-function obtenerProducto(productoId, productoNombre, productoPrecio, cantidad,precioTotal) {
+function obtenerProducto(productoId, productoNombre, productoPrecio, cantidad, precioTotal) {
   let productoIdd = productoId
   let productoNombree = productoNombre
   let productoPrecioo = productoPrecio
@@ -192,42 +176,19 @@ function armandoObjDlCarrito(productoIdd, productoNombree, productoPrecioo, prod
     total: totalPrecio
   }
   carrito.push(productoDelCarrito)
-  PrecioTotalFuncion(carrito)
-  creamosCarrito(carrito,asdfgh)
+
+  creamosCarrito(carrito)
 
 }
 
 function eliminarDelCarrito(elementid) {
   const buscamosElementoId = carrito.find((producto) => producto.id === elementid)
   const indice = carrito.indexOf(buscamosElementoId)
-  carrito.splice(indice, 1)
+  if(buscamosElementoId.cantidad > 1){
+    buscamosElementoId.cantidad --
+  }else{
+
+    carrito.splice(indice, 1)
+  }
   creamosCarrito(carrito)
 }
-
-function PrecioTotalFuncion (array){
-  const proddd = array.map(prodd => {
-  const aaaa = prodd.cantidad
-  const ssss = prodd.precio
-  const dddd = aaaa * ssss
-  return dddd
-
-  })
- proddd.push(asdfgh)
- 
-/*   console.log(prodd)
-  if(prodd.cantidad>1){
-
-    PrecioGlobalFuncion(prodd)
-  }else{
-    carrito.push(prodd)
-  }
-
-}
-function PrecioGlobalFuncion (array){
-  const proddd = array.map(prodds => {
-  const asdf = prodds+prodds
-  return asdf
-
-  })
-console.log(proddd) */
-}const asdfgh =""
