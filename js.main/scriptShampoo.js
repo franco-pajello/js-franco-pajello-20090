@@ -1,39 +1,7 @@
-/* function NuevoProducto(id, producto, precio, img) {
-  this.id = id;
-  this.producto = producto;
-  this.precio = precio;
-  this.img = img;
-
-} */
-
-
- class ProductoCarrito {
-  constructor(producto) {
-    this.id = producto.id;
-    this.nombre = producto.nombre;
-    this.cantidad = 1;
-    this.precio = producto.precio;
-    this.precioTotal = producto.precio;
-  }
-
-  agregarUnidad() {
-     this.cantidad++;
-  }
-
-  quitarCantidadDelStock() {
-    this.cantidad --;
-  }
-
-  actualizarPrecioTotal() {
-   this.precioTotal = this.precio * this.cantidad;
-  }
-}
-
-
-
+let carrito = [];
 const productos = [{
     id: 0,
-    nombre: "sampoo graso",
+    nombre: "shampoo graso",
     precio: 500,
     img: "./img-productos/shampoo-graso.jpg"
   },
@@ -66,14 +34,10 @@ const productos = [{
     nombre: "Jabon",
     precio: 250,
     img: "./img-productos/jabon-organico-rosa.jpg",
+
   },
 
 ];
-let carrito = [];
-/* 
-const productoNuevo = productos.push(new NuevoProducto(6, "jabon", 300, "./img-productos/jabon-facial-para-piel-seca-rosas-2.jpg")); */
-
-
 const contenedor = document.getElementById("container");
 contenedor.className = "row"
 
@@ -81,93 +45,146 @@ productos.forEach((producto) => {
 
   let card = document.createElement("div");
 
-
-  card.classList.add("card", "col-sm-12", "col-lg-3", );
+  card.classList.add("card", "col-sm-12", "col-lg-3");
 
   card.innerHTML = `  <img src=${producto.img} class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">${producto.nombre}</h5>
-      <p class="card-text">${ "$"+ producto.precio}</p>
-      <div class="btn-group" role="group" aria-label="Basic example">
-      <button id="btnComprar${producto.id}" type="button"  class="btn btn-primary">comprar</button>
-      </div> 
-
-    </div>`;
+  <div class="card-body">
+  <h5 class="card-title cardProducto">${producto.nombre}</h5>
+  <p class="card-text cardPrecio">${ "$"+ producto.precio}</p>
+  <div class="btn-group" role="group" aria-label="Basic example">
+  <button type="button"  class="btn btn-primary", id="btnComprar${producto.id}" idProducto="${producto.id}" >Añadir al carrito</button>
+  </div> 
+  
+  </div>`;
 
   contenedor.appendChild(card);
-
   let btn = document.getElementById(`btnComprar${producto.id}`);
+  btn.addEventListener("click", () => {
+    let cantidad = 1
 
-  btn.onclick = () => agregarCarrito(producto.id);
+    const productoRepetido = carrito.some(elemento => elemento.id === producto.id)
+    if (productoRepetido) {
+
+      const prod = carrito.map(prod => {
+        if (prod.id === producto.id) {
+          prod.cantidad++
+          prod.precio * prod.cantidad
+          creamosCarrito(carrito)
+          return;
+        }
+      })
+    } else {
+
+      obtenerProducto(producto.id, producto.nombre, producto.precio, cantidad)
+    }
+
+  })
 });
 
-function agregarCarrito(idDelProducto) {
-  let productoEnCarrito = carrito.includes(idDelProducto)
 
-  if (productoEnCarrito === true) {
-   /*  let index = carrito.findIndex((elemento) => elemento.id === alfajorEnCarrito.id); */
-
-        carrito[productoEnCarrito].agregarUnidad();
-        carrito[productoEnCarrito].actualizarPrecioTotal();
-        creamosCarrito(carrito) 
-      } 
-  if (productoEnCarrito === false) {
-
-
-
-    carrito.push(new ProductoCarrito(productos[idDelProducto]));
-  }
-
-  creamosCarrito(carrito) 
-  
-}
 //AGREGAMOS CARRITO COMO MODAL
 
 
 let headerCarrito = document.getElementById("headerCarrito");
 
 let carritoModal = document.createElement("div")
+carritoModal.innerHTML =
+  `<button type="button" class="btn btn-primary badge" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Carrito
+  </button>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+  <div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Carrito</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body" id="modalCarritoBody">
 
-carritoModal.innerHTML = 
-`<button type="button" class="btn btn-primary badge" data-bs-toggle="modal" data-bs-target="#exampleModal">
-Carrito
-</button>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<h5 class="modal-title" id="exampleModalLabel">Mi Carrito</h5>
-<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-</div>
-<div class="modal-body" id="modalCarritoBody">
-
-</div>
-<div class="modal-footer" >
-<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-</div>
-</div>
-</div>
-</div>`
+  
+  </div>
+  <h5><div class="modal-footer   d-flex justify-content-between"> 
+  <p >TOTAL:</p>
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">vaciar carrito</button>
+  
+  </div></h5>
+  <div class="modal-footer  d-flex justify-content-between">  
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Comprar</button>
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+  
+  </div>
+  </div>
+  </div>
+  </div>`
 headerCarrito.appendChild(carritoModal);
 
-let modalCarritoBody = document.getElementById("modalCarritoBody");
+const modalCarritoBody = document.getElementById("modalCarritoBody");
+
+
+
 function creamosCarrito(array) {
 
-for (let producto of array) {
-  let productoAgregadoAlCarrito = document.createElement("div")
-  productoAgregadoAlCarrito.innerHTML =
-  `<div class="alert alert-success" role="alert">
-  <h4 class="alert-heading">${producto.nombre} 
-  <p>${producto.precio}</p>
-  <hr>
-  <p class="mb-0">${producto.cantidad}</p>
-  <hr>
-<p class="mb-0">$${producto.precio} <button id="btnEliminar${producto.id}" type="button" class="btn btn-dark">ELIMINAR</button></h4></p>
-</div> ` 
+  modalCarritoBody.innerHTML = ""
 
-modalCarritoBody.appendChild(productoAgregadoAlCarrito);
+  array.forEach(producto => {
+
+    let productoAgregadoAlCarrito = document.createElement("div")
+    productoAgregadoAlCarrito.innerHTML =
+      `<div class="alert alert-success" role="alert">
+      <h4 class="alert-heading">${producto.nombre} 
+      <hr>
+      <p class="mb-0">${producto.cantidad}</p>
+      <hr>
+      <p class="mb-0">${producto.precio}</p> <button id="btnEliminar${producto.id}" type="button" class="btn btn-dark">ELIMINAR</button></h4>
+      
+      </div> `
+
+    modalCarritoBody.appendChild(productoAgregadoAlCarrito);
+
+
+    let btnEliminar = document.getElementById(`btnEliminar${producto.id}`);
+
+    btnEliminar.addEventListener("click", () => {
+      eliminarDelCarrito(producto.id)
+    })
+  });
 
 }
+
+function obtenerProducto(productoId, productoNombre, productoPrecio, cantidad) {
+  let productoIdd = productoId
+  let productoNombree = productoNombre
+  let productoPrecioo = productoPrecio
+  let productoCantidadd = cantidad
+  armandoObjDlCarrito(productoIdd, productoNombree, productoPrecioo, productoCantidadd)
+
 }
+
+function armandoObjDlCarrito(productoIdd, productoNombree, productoPrecioo, productoCantidadd) {
+
+  const productoDelCarrito = {
+    id: productoIdd,
+    nombre: productoNombree,
+    precio: productoPrecioo,
+    cantidad: productoCantidadd
+  }
+  carrito.push(productoDelCarrito)
+  /* precioTotal(carrito) */
+  creamosCarrito(carrito)
+
+}
+
+function eliminarDelCarrito(elementid) {
+  const buscamosElementoId = carrito.find((producto) => producto.id === elementid)
+  const indice = carrito.indexOf(buscamosElementoId)
+  carrito.splice(indice, 1)
+  creamosCarrito(carrito)
+}
+
+/* function precioTotal(array){
+  array.forEach(element => {
+    const asd = element.cantidad * element.precio
+    console.log(asd)
+  });
+} */
 
