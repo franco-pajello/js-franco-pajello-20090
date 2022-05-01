@@ -153,7 +153,7 @@ function creamosCarrito(array) {
       eliminarDelCarrito(producto.id)
     })
   });
-  precioTotalCard.innerText = carrito.reduce((acc , prod)=> acc + prod.precio * prod.cantidad,0)
+  precioTotalCard.innerText = carrito.reduce((acumulador , producto)=> acumulador + producto.precio * producto.cantidad,0)
 }
 
 function obtenerProducto(productoId, productoNombre, productoPrecio, cantidad, precioTotal) {
