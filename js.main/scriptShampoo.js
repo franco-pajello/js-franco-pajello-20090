@@ -69,7 +69,9 @@ productos.forEach((producto) => {
       const prod = carrito.map(prod => {
         if (prod.id === producto.id) {
           prod.cantidad++
+          carrito.length ++
           creamosCarrito(carrito)
+         
           return;
         }
       })
@@ -78,7 +80,7 @@ productos.forEach((producto) => {
       obtenerProducto(producto.id, producto.nombre, producto.precio, cantidad, precioTotal)
 
     }
-
+   
   })
 });
 
@@ -91,7 +93,7 @@ let headerCarrito = document.getElementById("headerCarrito");
 let carritoModal = document.createElement("div")
 carritoModal.innerHTML =
   `<button type="button" class="btn btn-primary badge" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Carrito
+  Carrito <p class="d-inline" id="btnCarrito"> </p>
   </button>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -104,17 +106,17 @@ carritoModal.innerHTML =
 
   
   </div>
-  <div d-flex justify-content-between>
-  <h5><div class="modal-footer" > 
-  TOTAL:<p id="precioTotalId"> </p>
+  <div class=" d-flex justify-content-around">
+  <h5 class="d-inline"><div class="modal-footer d-inline " > 
+  TOTAL:<p id="precioTotalId" class="d-inline"> </p>
   </div></h5>
-  <div>
-  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">vaciar carrito</button>
+  <div class="d-inline">
+  <button type="button" id="btnVaciarCarrito" class="btn btn-secondary">vaciar carrito</button>
   </div>
   </div>
   <div class="modal-footer  d-flex justify-content-between">  
   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Comprar</button>
-  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Seguir comprando</button>
   
   </div>
   </div>
@@ -122,6 +124,15 @@ carritoModal.innerHTML =
   </div>`
 headerCarrito.appendChild(carritoModal);
 
+let btnVaciarCarrito =document.getElementById(`btnVaciarCarrito`)
+
+btnVaciarCarrito.addEventListener("click", () => {
+  
+  
+  vaciarCarrito(carrito)
+})
+
+let btnCarrito = document.getElementById("btnCarrito")
 
 let precioTotalCard = document.getElementById("precioTotalId")
 
@@ -140,8 +151,9 @@ function creamosCarrito(array) {
       <hr>
       <p class="mb-0">${producto.cantidad}</p>
       <hr>
-      <p class="mb-0">${producto.precio}</p> <button id="btnEliminar${producto.id}" type="button" class="btn btn-dark">ELIMINAR</button></h4>
-      
+      <div class=" d-flex justify-content-between">
+      <p class="mb-0 d-inline" >c/u : $${producto.precio}</p> <button id="btnEliminar${producto.id}" type="button" class="btn btn-dark d-inline">ELIMINAR</button></h4>
+      </div>
       </div> `
 
     modalCarritoBody.appendChild(productoAgregadoAlCarrito);
@@ -151,9 +163,12 @@ function creamosCarrito(array) {
 
     btnEliminar.addEventListener("click", () => {
       eliminarDelCarrito(producto.id)
+
     })
+
   });
   precioTotalCard.innerText = carrito.reduce((acumulador , producto)=> acumulador + producto.precio * producto.cantidad,0)
+  btnCarrito.innerText=carrito.length
 }
 
 function obtenerProducto(productoId, productoNombre, productoPrecio, cantidad, precioTotal) {
@@ -186,9 +201,22 @@ function eliminarDelCarrito(elementid) {
   const indice = carrito.indexOf(buscamosElementoId)
   if(buscamosElementoId.cantidad > 1){
     buscamosElementoId.cantidad --
+    carrito.length --
   }else{
 
     carrito.splice(indice, 1)
   }
   creamosCarrito(carrito)
 }
+function vaciarCarrito (array){
+if(array.length>=1){
+  const afafafa = array.splice(0)
+  modalCarritoBody.innerHTML = ""
+  precioTotalCard.innerText = carrito.reduce((acumulador , producto)=> acumulador + producto.precio * producto.cantidad,0)
+  afafafa.push(creamosCarrito)
+
+}else{
+ alert("carrito vacio")
+}
+btnCarrito.innerText=carrito.length=""
+} 
