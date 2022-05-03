@@ -1,92 +1,59 @@
 let carrito = [];
-const productos = [{
-    id: 0,
-    nombre: "shampoo graso",
-    precio: 500,
-    img: "./img-productos/shampoo-graso.jpg"
-  },
-  {
-    id: 1,
-    nombre: "shampoo seco",
-    precio: 500,
-    img: "./img-productos/shampoo-seco.jpg "
-  },
-  {
-    id: 2,
-    nombre: "shampoo normal",
-    precio: 500,
-    img: "./img-productos/shampoo-normal.jpg"
-  },
-  {
-    id: 3,
-    nombre: "acondicionador",
-    precio: 400,
-    img: "./img-productos/acondicionador.jpg"
-  },
-  {
-    id: 4,
-    nombre: "Balsamo labial",
-    precio: 600,
-    img: "./img-productos/balsamo-labial.jpg"
-  },
-  {
-    id: 5,
-    nombre: "Jabon",
-    precio: 250,
-    img: "./img-productos/jabon-organico-rosa.jpg",
-
-  },
-
-];
 const contenedor = document.getElementById("container");
 contenedor.className = "row"
+fetch("./data.json")
+  .then((response) => response.json())
+  .then((data) => {
 
-productos.forEach((producto) => {
+    data.forEach((producto) => {
 
-  let card = document.createElement("div");
+      let card = document.createElement("div");
 
-  card.classList.add("card", "col-sm-12", "col-lg-3");
+      card.classList.add("card", "col-sm-12", "col-lg-3");
 
-  card.innerHTML = `  <img src=${producto.img} class="card-img-top" alt="...">
-  <div class="card-body">
-  <h5 class="card-title cardProducto">${producto.nombre}</h5>
-  <p class="card-text cardPrecio">${ "$"+ producto.precio}</p>
-  <div class="btn-group" role="group" aria-label="Basic example">
-  <button type="button"  class="btn btn-primary", id="btnComprar${producto.id}" idProducto="${producto.id}" >Añadir al carrito</button>
-  </div> 
-  
-  </div>`;
+      card.innerHTML = `  <img src=${producto.img} class="card-img-top" alt="...">
+    <div class="card-body">
+    <h5 class="card-title cardProducto">${producto.nombre}</h5>
+    <p class="card-text cardPrecio">${ "$"+ producto.precio}</p>
+    <div class="btn-group" role="group" aria-label="Basic example">
+    <button type="button"  class="btn btn-primary", id="btnComprar${producto.id}" idProducto="${producto.id}" >Añadir al carrito</button>
+    </div> 
+    
+    </div>`;
 
-  contenedor.appendChild(card);
-  let btn = document.getElementById(`btnComprar${producto.id}`);
-  btn.addEventListener("click", () => {
-    let cantidad = 1
-    let precioTotal = 0
+      contenedor.appendChild(card);
+      let btn = document.getElementById(`btnComprar${producto.id}`);
+      btn.addEventListener("click", () => {
 
-    const productoRepetido = carrito.some(elemento => elemento.id === producto.id)
-    if (productoRepetido) {
+        Swal.fire({
+          toast: true,
+          heightAuto: false,
+          padding: '1em',
+          color: '#716add',
+          background: '#fff url(/images/trees.png)',
+          position: 'top-end',
+          icon: 'success',
+          title: 'producto agregado al carrito',
+          showConfirmButton: false,
+          timer: 1000
+        })
 
-      const prod = carrito.map(prod => {
-        if (prod.id === producto.id) {
-          prod.cantidad++
-          carrito.length ++
-          creamosCarrito(carrito)
-         
-          return;
-        }
+        let cantidad = 1
+        let precioTotal = 0
+
+        const productoRepetido = carrito.some(elemento => elemento.id === producto.id)
+
+        let prod = ""
+        productoRepetido ? ((prod = carrito.map(prod => {
+          ((prod.id === producto.id ? ((prod.cantidad++), (btnCarrito.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.cantidad, 0)(creamosCarrito(carrito)))) : NaN))
+        }))) : obtenerProducto(producto.id, producto.nombre, producto.precio, cantidad, precioTotal);
+
       })
-    } else {
+    });
 
-      obtenerProducto(producto.id, producto.nombre, producto.precio, cantidad, precioTotal)
-
-    }
-   
+  }).catch((error) => {
+    alert("error al cargar los datos")
   })
-});
-
-
-//AGREGAMOS CARRITO COMO MODAL
-
 
 let headerCarrito = document.getElementById("headerCarrito");
 
@@ -124,11 +91,11 @@ carritoModal.innerHTML =
   </div>`
 headerCarrito.appendChild(carritoModal);
 
-let btnVaciarCarrito =document.getElementById(`btnVaciarCarrito`)
+let btnVaciarCarrito = document.getElementById(`btnVaciarCarrito`)
 
 btnVaciarCarrito.addEventListener("click", () => {
-  
-  
+
+
   vaciarCarrito(carrito)
 })
 
@@ -167,8 +134,8 @@ function creamosCarrito(array) {
     })
 
   });
-  precioTotalCard.innerText = carrito.reduce((acumulador , producto)=> acumulador + producto.precio * producto.cantidad,0)
-  btnCarrito.innerText=carrito.length
+  precioTotalCard.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.precio * producto.cantidad, 0)
+  btnCarrito.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.cantidad, 0)
 }
 
 function obtenerProducto(productoId, productoNombre, productoPrecio, cantidad, precioTotal) {
@@ -198,25 +165,29 @@ function armandoObjDlCarrito(productoIdd, productoNombree, productoPrecioo, prod
 
 function eliminarDelCarrito(elementid) {
   const buscamosElementoId = carrito.find((producto) => producto.id === elementid)
+  console.log(carrito)
   const indice = carrito.indexOf(buscamosElementoId)
-  if(buscamosElementoId.cantidad > 1){
-    buscamosElementoId.cantidad --
-    carrito.length --
-  }else{
 
-    carrito.splice(indice, 1)
-  }
+  buscamosElementoId.cantidad > 1 ? ((buscamosElementoId.cantidad--), (btnCarrito.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.cantidad, 0))) : carrito.splice(indice, 1);
+
+
   creamosCarrito(carrito)
 }
-function vaciarCarrito (array){
-if(array.length>=1){
-  const afafafa = array.splice(0)
-  modalCarritoBody.innerHTML = ""
-  precioTotalCard.innerText = carrito.reduce((acumulador , producto)=> acumulador + producto.precio * producto.cantidad,0)
-  afafafa.push(creamosCarrito)
 
-}else{
- alert("carrito vacio")
+function vaciarCarrito(array) {
+
+  let largoDelArrayCarritoVacio = ""
+  array.length >= 1 ? ((largoDelArrayCarritoVacio = array.splice(0)), (modalCarritoBody.innerHTML = ""), (precioTotalCard.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.precio * producto.cantidad, 0)), (largoDelArrayCarritoVacio.push(creamosCarrito))) : (swal.fire({
+    toast: true,
+    heightAuto: false,
+    padding: '1em',
+    color: '#716add',
+    position: 'center',
+    icon: 'error',
+    title: 'El carrito se encuentra vacio',
+    showConfirmButton: false,
+    timer: 1000
+  }))
+
+  btnCarrito.innerText = carrito.length = ""
 }
-btnCarrito.innerText=carrito.length=""
-} 

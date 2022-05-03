@@ -1,0 +1,37 @@
+[{
+      "id": 0,
+      "nombre": "shampoo graso",
+      "precio": 500,
+      "img": "./img-productos/shampoo-graso.jpg"
+   },
+   {
+      "id": 1,
+      "nombre": "shampoo seco",
+      "precio": 500,
+      "img": "./img-productos/shampoo-seco.jpg "
+   },
+   {
+      "id": 2,
+      "nombre": "shampoo normal",
+      "precio": 500,
+      "img": "./img-productos/shampoo-normal.jpg"
+   },
+   {
+      "id": 3,
+      "nombre": "acondicionador",
+      "precio": 400,
+      "img": "./img-productos/acondicionador.jpg"
+   },
+   {
+      "id": 4,
+      "nombre": "Balsamo labial",
+      "precio": 600,
+      "img": "./img-productos/balsamo-labial.jpg"
+   },
+   {
+      "id": 5,
+      "nombre": "Jabon",
+      "precio": 250,
+      "img": "./img-productos/jabon-organico-rosa.jpg"
+   }
+]
