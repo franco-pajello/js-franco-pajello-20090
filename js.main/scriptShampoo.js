@@ -232,7 +232,7 @@ function creamosCarrito(array) {
   
   function vaciarCarrito(array) {
     let largoDelArrayCarritoVacio = ""
-    array.length >= 1 ? ((largoDelArrayCarritoVacio = array.splice(0)), (modalCarritoBody.innerHTML = ""), (precioTotalCard.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.precio * producto.cantidad, 0)), (largoDelArrayCarritoVacio.push(creamosCarrito))) : (swal.fire({
+    array.length >= 1 ? ((largoDelArrayCarritoVacio = array.splice(0)), (modalCarritoBody.innerHTML = ""), (precioTotalCard.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.precio * producto.cantidad, 0)), (largoDelArrayCarritoVacio.push(creamosCarrito))) : swal.fire({
       toast: true,
       padding: '1em',
       color: '#716add',
@@ -241,7 +241,7 @@ function creamosCarrito(array) {
       title: 'El carrito se encuentra vacío',
       showConfirmButton: false,
       timer: 1000
-    }))
+    })
     creamosLocalStorage()
     btnCarrito.innerText = carrito.length = ""
   }
