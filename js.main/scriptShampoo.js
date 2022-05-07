@@ -41,7 +41,7 @@ fetch("./data.json")
           showConfirmButton: false,
           timer: 1000
         })
-        
+
         let cantidad = 1
 
         let precioTotal = 0
@@ -91,7 +91,7 @@ headerCarrito.appendChild(carritoModal);
 let btnVaciarCarrito = document.getElementById(`btnVaciarCarrito`)
 
 btnVaciarCarrito.addEventListener("click", () => {
-
+  vaciarCarrito()
   creamosLocalStorage(0)
 })
 
@@ -151,31 +151,31 @@ btnComprar.addEventListener("click", () => {
     </div>
     </form>`,
       showConfirmButton: false,
-      
+
     })
-} else {
-  Swal.fire({
-    toast: true,
-    position: 'center',
-    icon: 'error',
-    title: 'El carrito se encuentra vacio',
-    showConfirmButton: false,
-    timer: 1000
-  })
-}
+  } else {
+    Swal.fire({
+      toast: true,
+      position: 'center',
+      icon: 'error',
+      title: 'El carrito se encuentra vacio',
+      showConfirmButton: false,
+      timer: 1000
+    })
+  }
 })
 
 /* funciones */
 
 function creamosCarrito(array) {
-  
+
   modalCarritoBody.innerHTML = ""
-  
+
   array.forEach(producto => {
-    
+
     let productoAgregadoAlCarrito = document.createElement("div")
     productoAgregadoAlCarrito.innerHTML =
-    `<div class="alert alert-success" role="alert">
+      `<div class="alert alert-success" role="alert">
     <h4 class="alert-heading">${producto.nombre} 
     <hr>
     <p class="mb-0">${producto.cantidad}</p>
@@ -184,77 +184,72 @@ function creamosCarrito(array) {
     <p class="mb-0 d-inline" >c/u : $${producto.precio}</p> <button id="btnEliminar${producto.id}" type="button" class="btn btn-dark d-inline">ELIMINAR</button></h4>
     </div>
     </div> `
-    
+
     modalCarritoBody.appendChild(productoAgregadoAlCarrito);
     let btnEliminar = document.getElementById(`btnEliminar${producto.id}`);
-    
+
     btnEliminar.addEventListener("click", () => {
       eliminarDelCarrito(producto.id)
       creamosLocalStorage()
     })
-    
+
   });
   precioTotalCard.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.precio * producto.cantidad, 0)
   btnCarrito.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.cantidad, 0)
 }
 
-  function obtenerProducto(productoId, productoNombre, productoPrecio, cantidad, precioTotal) {
-    let productoIdd = productoId
-    let productoNombree = productoNombre
-    let productoPrecioo = productoPrecio
-    let productoCantidadd = cantidad
-    let totalPrecio = precioTotal
-    armandoObjDlCarrito(productoIdd, productoNombree, productoPrecioo, productoCantidadd, totalPrecio)
+function obtenerProducto(productoId, productoNombre, productoPrecio, cantidad, precioTotal) {
+  let productoIdd = productoId
+  let productoNombree = productoNombre
+  let productoPrecioo = productoPrecio
+  let productoCantidadd = cantidad
+  let totalPrecio = precioTotal
+  armandoObjDlCarrito(productoIdd, productoNombree, productoPrecioo, productoCantidadd, totalPrecio)
+}
+
+function armandoObjDlCarrito(productoIdd, productoNombree, productoPrecioo, productoCantidadd, totalPrecio) {
+
+  const productoDelCarrito = {
+    id: productoIdd,
+    nombre: productoNombree,
+    precio: productoPrecioo,
+    cantidad: productoCantidadd,
+    total: totalPrecio
   }
-  
-  function armandoObjDlCarrito(productoIdd, productoNombree, productoPrecioo, productoCantidadd, totalPrecio) {
-    
-    const productoDelCarrito = {
-      id: productoIdd,
-      nombre: productoNombree,
-      precio: productoPrecioo,
-      cantidad: productoCantidadd,
-      total: totalPrecio
-    }
-    carrito.push(productoDelCarrito)
-    creamosCarrito(carrito)
-  }
-  
-  function eliminarDelCarrito(elementid) {
-    const buscamosElementoId = carrito.find((producto) => producto.id === elementid)
-    
-    const indice = carrito.indexOf(buscamosElementoId)
-  
-    buscamosElementoId.cantidad > 1 ? ((buscamosElementoId.cantidad--), (btnCarrito.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.cantidad, 0))) : carrito.splice(indice, 1);
-    
-    creamosCarrito(carrito)
-  }
-  
-  function vaciarCarrito(array) {
-    let largoDelArrayCarritoVacio = ""
-    array.length >= 1 ? ((largoDelArrayCarritoVacio = array.splice(0)), (modalCarritoBody.innerHTML = ""), (precioTotalCard.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.precio * producto.cantidad, 0)), (largoDelArrayCarritoVacio.push(creamosCarrito))) : swal.fire({
-      toast: true,
-      padding: '1em',
-      color: '#716add',
-      position: 'center',
-      icon: 'error',
-      title: 'El carrito se encuentra vacío',
-      showConfirmButton: false,
-      timer: 1000
-    })
-    creamosLocalStorage()
-    btnCarrito.innerText = carrito.length = ""
-  }
-  
-  function creamosLocalStorage() {
+  carrito.push(productoDelCarrito)
+  creamosCarrito(carrito)
+}
+
+function eliminarDelCarrito(elementid) {
+  const buscamosElementoId = carrito.find((producto) => producto.id === elementid)
+
+  const indice = carrito.indexOf(buscamosElementoId)
+
+  buscamosElementoId.cantidad > 1 ? ((buscamosElementoId.cantidad--), (btnCarrito.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.cantidad, 0))) : carrito.splice(indice, 1);
+
+  creamosCarrito(carrito)
+}
+
+function vaciarCarrito(array) {
+  let largoDelArrayCarritoVacio = ""
+  array.length >= 1 ? ((largoDelArrayCarritoVacio = array.splice(0)), (modalCarritoBody.innerHTML = ""), (precioTotalCard.innerText = carrito.reduce((acumulador, producto) => acumulador + producto.precio * producto.cantidad, 0)), (largoDelArrayCarritoVacio.push(creamosCarrito))) : (swal.fire({
+    toast: true,
+    padding: '1em',
+    color: '#716add',
+    position: 'center',
+    icon: 'error',
+    title: 'El carrito se encuentra vacío',
+    showConfirmButton: false,
+    timer: 1000
+  }))
+  creamosLocalStorage()
+  btnCarrito.innerText = carrito.length = ""
+}
+
+function creamosLocalStorage() {
   localStorage.setItem("carrito", JSON.stringify(carrito))
 }
 window.onload = function () {
   const storage = JSON.parse(localStorage.getItem("carrito"));
-  storage ? ((carrito = storage),(creamosCarrito(storage))) : ""
+  storage ? ((carrito = storage), (creamosCarrito(storage))) : ""
 }
-
-
-
-
-
