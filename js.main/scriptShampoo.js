@@ -91,8 +91,8 @@ headerCarrito.appendChild(carritoModal);
 let btnVaciarCarrito = document.getElementById(`btnVaciarCarrito`)
 
 btnVaciarCarrito.addEventListener("click", () => {
-  vaciarCarrito()
-  creamosLocalStorage(0)
+  vaciarCarrito(carrito)
+  creamosLocalStorage(0) 
 })
 
 let btnCarrito = document.getElementById("btnCarrito")
